@@ -1,0 +1,34 @@
+name: Python Auto Run
+
+# 1. Cấu hình thời điểm chạy
+on:
+  push:
+    branches: [ "main" ]  # Chạy mỗi khi bạn push code lên nhánh main
+  pull_request:
+    branches: [ "main" ]  # Chạy khi có yêu cầu gộp code vào nhánh main
+  schedule:
+    - cron: '0 0 * * *'    # (Tùy chọn) Tự động chạy vào 00:00 mỗi ngày (giờ UTC)
+  workflow_dispatch:      # Cho phép bạn bấm nút "Run workflow" thủ công trên web
+
+# 2. Các bước thực hiện
+jobs:
+  build:
+    runs-on: ubuntu-latest # Chạy trên máy ảo Ubuntu bản mới nhất
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4 # Bước lấy code từ repo về máy ảo
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10' # Bạn có thể đổi thành 3.11 hoặc 3.12 tùy nhu cầu
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        # Lệnh trên sẽ kiểm tra: nếu có file requirements.txt thì mới cài thư viện
+
+      - name: Run my Python script
+        run: python main.py # Tên file code chính của bạn
