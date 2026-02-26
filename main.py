@@ -8,45 +8,35 @@ import tempfile
 import json
 import os
 
-# ======================================================================
-# 1. THÔNG TIN CẤU HÌNH (THAY THẾ TẠI ĐÂY)
-# ======================================================================
+DB_HOST = "dbvms-read.cw37wboebtg4.us-east-2.rds.amazonaws.com"
+DB_USER = "vietnguyen"
+DB_PASSWORD = "DatBike@12345!"
+DB_NAME = "datbikedb"
+DB_PORT = 3306
 
-# --- Thông tin Database ---
-DB_CONFIG = {
-    "host": "YOUR_DB_HOST",
-    "user": "YOUR_DB_USER",
-    "password": "YOUR_DB_PASSWORD",
-    "name": "YOUR_DB_NAME",
-    "port": 3306
-}
-
-# --- Thông tin Google Sheets ---
-SPREADSHEET_ID = "YOUR_SPREADSHEET_ID"
-SHEET_NAME_DB = "db_vms"
-SHEET_NAME_UP_VMS = "up_vms"
-SHEET_NAME_SALE = "sale_vms"
-
-# --- Google Service Account JSON ---
-# Dán toàn bộ nội dung file JSON của bạn vào đây
+SERVICE_ACCOUNT_KEY_PATH = "boreal-airway-473310-q3-56220fa7be41.json"
 SERVICE_ACCOUNT_JSON = {
   "type": "service_account",
-  "project_id": "YOUR_PROJECT_ID",
-  "private_key_id": "YOUR_PRIVATE_KEY_ID",
-  "private_key": "-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n",
-  "client_email": "YOUR_CLIENT_EMAIL",
-  "client_id": "...",
+  "project_id": "boreal-airway-473310-q3",
+  "private_key_id": "56220fa7be4185418022097b8b91f6028357f451",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCerZMzD8EIeL7c\n7PJ5tiQo6Ft6fGMwgWf/O8kWxyIy1OquGaRkWZPpzvsde8u9qGHLDJhSa9tavkzC\nso4RCWp5xLsP/MGN87t/+VdE3Aa6C3tBQcfdrbyBJVNXc+1lt48DcFukVh5L1G6t\n940VaMEIWBnez5jdyqiR9RSmOHH8Tt+2H839T0eDrrsZlVafsQK5X+YGJpHglWnL\nHZD7qN+AhaouQLPDpo75prRGJPC1hvCdSBApcpgxhf4NW1fcec4P7RjN+yd2Ms49\nRLCB2d7B2NHHjgHAytDlOmJyfjpKTyZ7NYOKEKWQvfSWwTYYi2cVyqpu1CNY9M/o\nJ+JEvHBLAgMBAAECggEAQSS+hVyG4az8oqOOaoRp9Pdrsu4FJMFDykenpzfKpPa/\ngAlb8azK6lbExlZwDyVlPKCnmlLYY7kzt0zpwTnN4j7vk0Evz1DMXd4mQ0lXY6La\nD7DrVmmAtb52qDUaNcO1rXI/1UhbuML2S2qRm8P9V6kfudcdiZStPvrQZutOdIfg\nuMeCtBPYO4Xvfg0lKsdoOisn8WHRUWMPjP89HPnCGMymLeVZy7jl07rUfWRrETrK\nMeRHAQFFD7JkC68gMKjUC0NXTIY3MORdbSntFCv6VG3euoFyfUwoj81dJv4DMGa8\nwrv7GBMfpkhp3t36EvRe50+bG4eXSEfz5AwLgrFCvQKBgQDfUitkHaPO458ibQDn\nn4J2zlN/afw54dZSdXM4tEiQ/Y44Io5qQsL4lyhhEPRWTf4sf6MQwx+XFBmqtoKp\n8uOlz77zJA00omcAnDDx1TMgw4bU+2WEe3FLO5P3D3/CMkUvP2BZrXQOGMVZ+Kue\nA3TpL7JnhmP9riAHUBTAweeqhwKBgQC15dCnBQY+eN4w0z3oqYZ1VYeMsoSVtL8S\nnWAlw0YwG0bidmFynISiWmZOwLOEdkFF0JlM21u0enpqJT1Mo93mycKnPMVgHiwx\nyUrygVlZUYLIVYuSUyUMp3BH4jbxQE+aWI41aryXrwEHIYXkkobKl0sSMhvxbq+e\nAEk3ln2pHQKBgBmbl4Qsbes8aLQO4cqtnM04zZRPt+9/OQ9Njn/TFHsjyBohxEjl\nDOxqkOPIiOwYl2vM2wsCBO5TDLppoUQRqQ8Lam8BFE6TzNHiFy6z7t/z69MiXLq7\nWPtygn4TFehT0WEgmFDQNf2j04WEoVFGPjK7GG8Mlwyw2dVc1nRgB8ujAoGAAu5R\nDl/mWdtYuTCuLrGMmRdnt7yopkDjU0l14yXiW6QU4FFIALDE8ljCjUJNojTFmHpj\n/fkK4T2X+13ePv3k9XMKz+cKxyG1VJgJvR6Ycff+Q3wdY54zWqDYDlB20ixXHAWR\nRQsTPt5zBcpkfepegaUucHyeNqWx7rnSdDLYk4ECgYBGYtpkrs0AeOw3vg3pLu/y\niej4mkE/KVpEnmADfnjruvwkEGfngdnjzMptIK/v4d8ng2nWdze3WHWXLCh6Kaut\nf86FRCEUf/XqlitBaIL/rqb10NrTWz7MbbptzuOi67dLy+vY0QzCqnW2GFle0Xjf\nqdstRkFn2avWkUuHOjPLeA==\n-----END PRIVATE KEY-----\n",
+  "client_email": "push-vms-to-ggs@boreal-airway-473310-q3.iam.gserviceaccount.com",
+  "client_id": "108713013004074742662",
   "auth_uri": "https://accounts.google.com/o/oauth2/auth",
   "token_uri": "https://oauth2.googleapis.com/token",
   "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "...",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/push-vms-to-ggs%40boreal-airway-473310-q3.iam.gserviceaccount.com",
   "universe_domain": "googleapis.com"
 }
 
-# ======================================================================
-# 2. CÁC CÂU LỆNH SQL (GIỮ NGUYÊN NỘI DUNG GỐC)
-# ======================================================================
+SPREADSHEET_ID = "11JwOh8SvjahxZcbHPtr3IrOQGsd--zqq3P9HACdWgek"
+SHEET_NAME = "db_vms"
+SHEET_NAME_UP_VMS = "up_vms"
+SHEET_NAME_SALE = "sale_vms"
 
+# ======================================================================
+# 2. TRUY VẤN SQL (Lấy dữ liệu inventory với frame number)
+# ======================================================================
 SQL_QUERY = """
     WITH LatestShippingStatus AS (
         SELECT
@@ -84,22 +74,24 @@ SQL_QUERY = """
         to_.cancelled_at AS transfer_cancelled_at,
         msh.max_shipping_id AS shipping_id,
         lss.latest_shipping_status,
+        -- Các cột mới được thêm/cập nhật: Tên và Loại kho nhận
         s_to.name AS to_store_name,
         s_to.type AS to_store_type
     FROM inventory i
     JOIN product p ON i.product_id = p.id
     JOIN store s_inv ON i.store_id = s_inv.id
-    LEFT JOIN stock_transfer st 
+    LEFT JOIN stock_transfer st
         ON i.id = st.from_inventory_id OR i.id = st.to_inventory_id
-    LEFT JOIN transfer_order to_ 
+    LEFT JOIN transfer_order to_
         ON st.transfer_id = to_.id
-    LEFT JOIN store s_to 
+    -- JOIN mới để lấy tên và loại kho nhận
+    LEFT JOIN store s_to
         ON to_.to_store_id = s_to.id
     LEFT JOIN MaxShippingForTransfer msh
         ON to_.id = msh.transfer_order_id
     LEFT JOIN shipping sh
         ON msh.max_shipping_id = sh.id
-    LEFT JOIN LatestShippingStatus lss 
+    LEFT JOIN LatestShippingStatus lss
         ON msh.max_shipping_id = lss.shipping_id AND lss.rn = 1
     WHERE i.frame_number IS NOT NULL
     AND TRIM(i.frame_number) <> ''
@@ -155,50 +147,43 @@ WHERE
     p.category = 'BIKE'
     AND so.paid_at >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
     AND so.order_status NOT IN ('CANCELLED', 'PENDING');
+
 """
 
-# ======================================================================
-# 3. HÀM XỬ LÝ CHÍNH
-# ======================================================================
-
 def main():
-    # 3.1. Kết nối Database
-    encoded_password = quote_plus(DB_CONFIG["password"])
-    connection_string = (
-        f"mysql+pymysql://{DB_CONFIG['user']}:{encoded_password}@"
-        f"{DB_CONFIG['host']}:{DB_CONFIG['port']}/{DB_CONFIG['name']}"
-    )
+    encoded_password = quote_plus(DB_PASSWORD)
+    connection_string = f"mysql+pymysql://{DB_USER}:{encoded_password}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
     engine = create_engine(connection_string)
 
-    # 3.2. Truy vấn dữ liệu
-    print("Đang truy vấn dữ liệu từ MySQL...")
     df = pd.read_sql(SQL_QUERY, engine)
     df_up_vms = pd.read_sql(SQL_QUERY_UP_VMS, engine)
     df_sale = pd.read_sql(SQL_QUERY_SALE, engine)
-    
-    counts = {
-        "db_vms": len(df),
-        "up_vms": len(df_up_vms),
-        "sale_vms": len(df_sale)
-    }
-    print(f"Lấy dữ liệu thành công: {counts}")
+    db_vms_rows = len(df)
+    up_vms_rows = len(df_up_vms)
+    sale_vms_rows = len(df_sale)
+    print(f"fetched db_vms: {db_vms_rows} rows; up_vms: {up_vms_rows} rows; sale_vms: {sale_vms_rows} rows")
 
-    # 3.3. Dọn dẹp và chuẩn hóa dữ liệu
-    def clean_dataframe(target_df):
-        # Chuyển datetime sang string
-        for col in target_df.select_dtypes(include=['datetime64[ns]', 'datetime64']).columns:
-            target_df[col] = target_df[col].astype(str)
-        
-        # Xử lý các đối tượng date/datetime còn sót lại và fill null
-        return target_df.applymap(
-            lambda x: x.isoformat() if isinstance(x, (datetime.date, datetime.datetime, pd.Timestamp)) else x
-        ).fillna('')
+    for col in df.select_dtypes(include=['datetime64[ns]']).columns:
+        df[col] = df[col].astype(str)
+    for col in df_up_vms.select_dtypes(include=['datetime64[ns]']).columns:
+        df_up_vms[col] = df_up_vms[col].astype(str)
+    for col in df_sale.select_dtypes(include=['datetime64[ns]']).columns:
+        df_sale[col] = df_sale[col].astype(str)
 
-    df = clean_dataframe(df)
-    df_up_vms = clean_dataframe(df_up_vms)
-    df_sale = clean_dataframe(df_sale)
+    def _to_serializable(value):
+        if isinstance(value, (datetime.date, datetime.datetime, pd.Timestamp)):
+            return value.isoformat()
+        return value
 
-    # 3.4. Kết nối Google Sheets (Sử dụng file tạm cho Service Account)
+    df = df.applymap(_to_serializable)
+    df_up_vms = df_up_vms.applymap(_to_serializable)
+    df_sale = df_sale.applymap(_to_serializable)
+
+    df = df.fillna('')
+    df_up_vms = df_up_vms.fillna('')
+    df_sale = df_sale.fillna('')
+
+    # Prefer embedded JSON; fall back to path if needed
     tmp_key_path = None
     try:
         with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".json") as f:
@@ -208,29 +193,42 @@ def main():
     finally:
         if tmp_key_path and os.path.exists(tmp_key_path):
             os.unlink(tmp_key_path)
-
     spreadsheet = gc.open_by_key(SPREADSHEET_ID)
 
-    # 3.5. Hàm cập nhật Worksheet
-    def push_to_worksheet(dataframe, sheet_name):
-        try:
-            worksheet = spreadsheet.worksheet(sheet_name)
-        except gspread.exceptions.WorksheetNotFound:
-            print(f"Worksheet '{sheet_name}' không tồn tại. Đang tạo mới...")
-            worksheet = spreadsheet.add_worksheet(title=sheet_name, rows="1000", cols=str(max(1, len(dataframe.columns))))
-        
-        worksheet.clear()
-        data_to_upload = [dataframe.columns.tolist()] + dataframe.values.tolist()
-        worksheet.update(range_name='A1', values=data_to_upload, value_input_option='USER_ENTERED')
-        print(f"Đã cập nhật sheet: {sheet_name}")
+    worksheet = spreadsheet.worksheet(SHEET_NAME)
+    worksheet.clear()
+    headers = df.columns.tolist()
+    data_values = df.values.tolist()
+    data_to_upload = [headers] + data_values
+    worksheet.update(range_name='A1', values=data_to_upload, value_input_option='USER_ENTERED')
 
-    # Thực hiện đẩy dữ liệu
-    push_to_worksheet(df, SHEET_NAME_DB)
-    push_to_worksheet(df_up_vms, SHEET_NAME_UP_VMS)
-    push_to_worksheet(df_sale, SHEET_NAME_SALE)
+    worksheet_up = spreadsheet.worksheet(SHEET_NAME_UP_VMS)
+    worksheet_up.clear()
+    headers_up = df_up_vms.columns.tolist()
+    data_values_up = df_up_vms.values.tolist()
+    data_to_upload_up = [headers_up] + data_values_up
+    worksheet_up.update(range_name='A1', values=data_to_upload_up, value_input_option='USER_ENTERED')
 
-    print("--- HOÀN THÀNH ---")
-    return counts
+    # sale_vms sheet (create if not exists)
+    try:
+        worksheet_sale = spreadsheet.worksheet(SHEET_NAME_SALE)
+    except gspread.exceptions.WorksheetNotFound:
+        headers_sale = df_sale.columns.tolist()
+        cols = max(1, len(headers_sale))
+        worksheet_sale = spreadsheet.add_worksheet(title=SHEET_NAME_SALE, rows="1000", cols=str(cols))
+    worksheet_sale.clear()
+    headers_sale = df_sale.columns.tolist()
+    data_values_sale = df_sale.values.tolist()
+    data_to_upload_sale = [headers_sale] + data_values_sale
+    worksheet_sale.update(range_name='A1', values=data_to_upload_sale, value_input_option='USER_ENTERED')
+
+    print(f"written db_vms: {db_vms_rows} rows; up_vms: {up_vms_rows} rows; sale_vms: {sale_vms_rows} rows")
+
+    return {
+        "db_vms_rows": db_vms_rows,
+        "up_vms_rows": up_vms_rows,
+        "sale_vms_rows": sale_vms_rows
+    }
 
 if __name__ == "__main__":
     main()
